@@ -2,17 +2,11 @@
 
 const IPFS = require('./ipfs')
 const visualizer = require('./visualizer')
-const ipld = require('ipld')
 const ipldDagPb = require('ipld-dag-pb')
-
-window.ipld = ipld
-window.ipldDagPb = ipldDagPb
 
 document.addEventListener('DOMContentLoaded', () => {
   IPFS.create((err, node) => {
     if (err) { throw err }
-
-    window.node = node
 
     const resolver = (hash, callback) => {
       node.block.get(hash, (err, blockRes) => {
@@ -30,18 +24,31 @@ document.addEventListener('DOMContentLoaded', () => {
       })
     }
 
+    const $source = document.getElementById('source')
+
     resolver('QmSiwkG4LxQcXKTfEgc8XcNXpq1krzXXF2afdiC3Lduhjb', (err, res) => {
       if (err) { throw err }
       const rootBlock = {name: 'Root', children: res}
       visualizer(node, resolver, rootBlock)
     })
 
-    // document.getElementById('visualize')
-    //   .onclick = visualizer(node)
+    document.getElementById('visualize').onclick = () => {
+      console.log($source.value)
+      resolver($source.value, (err, res) => {
+        if (err) { throw err }
+        const rootBlock = {name: 'Root', children: res}
+        visualizer(node, resolver, rootBlock)
+      })
+    }
 
-    document.getElementById('source').addEventListener('keyup', (e) => {
+    $source.addEventListener('keyup', (e) => {
       if (e.keyCode === 13) {
-        console.log('enter')
+        console.log(e.target.value)
+        resolver(e.target.value, (err, res) => {
+          if (err) { throw err }
+          const rootBlock = {name: 'Root', children: res}
+          visualizer(node, resolver, rootBlock)
+        })
       }
     })
   })

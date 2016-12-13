@@ -14,6 +14,8 @@ module.exports = (ipfs, resolver, json) => {
   var diagonal = d3.svg.diagonal()
       .projection(function (d) { return [d.y, d.x] })
 
+  d3.select('#graph').selectAll('svg').remove()
+
   var vis = d3.select('#graph').append('svg:svg')
       .attr('width', w + m[1] + m[3])
       .attr('height', h + m[0] + m[2])
@@ -31,13 +33,7 @@ module.exports = (ipfs, resolver, json) => {
     }
   }
 
-  // Initialize the display to show a few nodes.
   root.children.forEach(toggleAll)
-  // toggle(root.children[1])
-  // toggle(root.children[1].children[2])
-  // toggle(root.children[9])
-  // toggle(root.children[9].children[0])
-
   update(root)
 
   function update (source) {
