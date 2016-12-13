@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "async": "^2.1.4",
+    "concat-stream": "^1.5.2",
     "ipfs": "^0.20.3"
   }
 }

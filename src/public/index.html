@@ -3,9 +3,13 @@
   <head>
     <meta charset="UTF-8"/>
     <title>ipdendro</title>
-    <script type="text/javascript" src="js/d3/d3.js"></script>
-    <script type="text/javascript" src="js/d3/d3.layout.js"></script>
-    <script type="text/javascript" src="js/bundle.js"></script>
+   
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery-1.9.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/d3/d3.js"></script>
+    <script src="js/d3/d3.layout.js"></script>
+    <script src="js/bundle.js"></script>
     <style>
       .content {
         border: 1px solid black;
@@ -29,12 +33,47 @@
         stroke: #ccc;
         stroke-width: 1.5px;
       }
+
+      textarea {
+        width: 100%
+      }
+      .content {
+        width: 100%
+      }
     </style>
   </head>
   <body>
-    <h3>Insert your CID</h3>
-    <textarea id="source"></textarea>
-    <button id="visualize">visualize</button>
-    <div id="graph"></div>
+    <div class="container">
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-md-9">
+            <h1>Load content from IPFS!</h1>
+          </div>
+          <div class="col-md-3">
+            <img src="img/ipfs-logo.png" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h3>Insert a CID (Content IDentifier)</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-10">
+          <textarea id="source"></textarea>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-lg btn-success" id="visualize">visualize</button>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-10">
+          <div class="content" id="content"></div>
+          <!-- <div id="graph"></div> -->
+        </div>
+      </div>
+    </div>
   </body>
 </html>
