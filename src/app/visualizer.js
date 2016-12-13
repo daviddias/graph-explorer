@@ -1,7 +1,7 @@
 /* global d3 */
 'use strict'
 
-module.exports = (ipfs) => {
+module.exports = (ipfs, resolver, json) => {
   let m = [20, 120, 20, 120]
   let w = 1280 - m[1] - m[3]
   let h = 800 - m[0] - m[2]
@@ -20,27 +20,25 @@ module.exports = (ipfs) => {
     .append('svg:g')
       .attr('transform', 'translate(' + m[3] + ',' + m[0] + ')')
 
-  d3.json('flare.json', function (json) {
-    root = json
-    root.x0 = h / 2
-    root.y0 = 0
+  root = json
+  root.x0 = h / 2
+  root.y0 = 0
 
-    function toggleAll (d) {
-      if (d.children) {
-        d.children.forEach(toggleAll)
-        toggle(d)
-      }
+  function toggleAll (d) {
+    if (d.children) {
+      d.children.forEach(toggleAll)
+      toggle(d, () => {})
     }
+  }
 
-    // Initialize the display to show a few nodes.
-    root.children.forEach(toggleAll)
-    toggle(root.children[1])
-    toggle(root.children[1].children[2])
-    toggle(root.children[9])
-    toggle(root.children[9].children[0])
+  // Initialize the display to show a few nodes.
+  root.children.forEach(toggleAll)
+  // toggle(root.children[1])
+  // toggle(root.children[1].children[2])
+  // toggle(root.children[9])
+  // toggle(root.children[9].children[0])
 
-    update(root)
-  })
+  update(root)
 
   function update (source) {
     var duration = d3.event && d3.event.altKey ? 5000 : 500
@@ -60,8 +58,7 @@ module.exports = (ipfs) => {
         .attr('class', 'node')
         .attr('transform', function (d) { return 'translate(' + source.y0 + ',' + source.x0 + ')' })
         .on('click', function (d) {
-          toggle(d)
-          update(d)
+          toggle(d, () => update(d))
         })
 
     nodeEnter.append('svg:circle')
@@ -136,14 +133,20 @@ module.exports = (ipfs) => {
   }
 
   // Toggle children.
-  function toggle (d) {
+  function toggle (d, callback) {
+    console.log(':toggle')
+    console.log(d)
     if (d.children) {
       d._children = d.children
       d.children = null
+      callback()
     } else {
-      d.children = d._children
-      d._children = null
+      resolver(d.value, (err, res) => {
+        if (err) { window.alert(err) }
+        console.log(res)
+        d.children = res
+        callback()
+      })
     }
   }
-
 }
