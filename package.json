@@ -19,6 +19,8 @@
   },
   "dependencies": {
     "async": "^2.1.4",
-    "ipfs": "^0.20.3"
+    "ipfs": "0.20.3",
+    "ipld-dag-pb": "^0.9.3",
+    "source-map-support": "^0.4.6"
   }
 }
